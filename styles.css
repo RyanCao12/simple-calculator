@@ -50,6 +50,11 @@ body {
   cursor: pointer;
 }
 
+.key:hover {
+  background-color: lightslategray;
+}
+
+
 .zero {
   grid-column: 1 / span 2;
   width: 9.4rem;
@@ -61,6 +66,18 @@ body {
   color: black;
 }
 
+.function:hover {
+  background-color:snow;
+}
+
+
+
 .operator {
   background-color: orange;
 }
+
+.operator:hover {
+  background-color: white;
+  color: orange;
+}
+
