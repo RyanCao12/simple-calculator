@@ -55,11 +55,30 @@ let currentNumber = null;
 let previousNumber = null;
 let previousKey = null;
 let operator = null;
+let tempNumber = null;
+
 
 // Format the currentNumber to be displayed
 const getDisplayNumber = () => {
   if (currentNumber === null) return '';
-  if (Number.isNaN(currentNumber)) return 'Error';
+  if (currentNumber.toString().length > 5) {
+    displayer.style.fontSize = "70px";
+    return currentNumber.toLocaleString();
+  } 
+  else if (currentNumber.toString().length > 3) {
+    displayer.style.fontSize = "90px";
+    return currentNumber.toLocaleString();
+  } 
+  else if (currentNumber.toString().length > 0) {
+      displayer.style.fontSize = "110px";
+      return currentNumber.toLocaleString();
+  } 
+  //else if (Number.isNaN(currentNumber)) return 'Error';
+  //if (Number.isNaN(currentNumber)) {
+  //  currentNumber = Number(currentNumber);
+  //  displayer.style.fontSize = "60px";
+  //  return currentNumber.toLocaleString();
+  //}
   return currentNumber.toLocaleString();
 };
 
@@ -108,12 +127,18 @@ const onKeyClick = (key) => {
     case '7':
     case '8':
     case '9':
+      //if (currentNumber.toString().length >= 7 && currentNumber != null) {}
+      tempNumber = currentNumber;
       if (['C', '%', '/', 'x', '-', '+', '='].some((s) => s === previousKey)) {
         // Starting enter a new number
         currentNumber = Number(key === '.' ? '0' : key);
       } else {
         // Append to the existing number
         currentNumber = Number(getDisplayNumber().replace(/,/, '') + key);
+      }
+
+      if (Number.isNaN(currentNumber)) {
+        currentNumber = tempNumber;
       }
       
       break; 
@@ -133,16 +158,40 @@ const onKeyClick = (key) => {
         try {
           switch (operator) {
             case '/':
-              currentNumber = previousNumber / currentNumber;
+              if (previousKey != '=') {
+                tempNumber = currentNumber;
+                currentNumber = previousNumber / currentNumber;
+                previousNumber = tempNumber;
+              } else {
+                currentNumber = currentNumber / previousNumber;
+              }
               break;
             case 'x':
-              currentNumber = previousNumber * currentNumber;
+              if (previousKey != '=') {
+                tempNumber = currentNumber;
+                currentNumber = previousNumber * currentNumber;
+                previousNumber = tempNumber;
+              } else {
+                currentNumber = previousNumber * currentNumber;
+              }
               break;
             case '-':
-              currentNumber = previousNumber - currentNumber;
+              if (previousKey != '=') {
+                tempNumber = currentNumber;
+                currentNumber = previousNumber - currentNumber;
+                previousNumber = tempNumber;
+              } else {
+                currentNumber = currentNumber - previousNumber;
+              }
               break;
             case '+':
-              currentNumber = previousNumber + currentNumber;
+              if (previousKey != '=') {
+                tempNumber = currentNumber;
+                currentNumber = previousNumber + currentNumber;
+                previousNumber = tempNumber;
+              } else {
+                currentNumber = previousNumber + currentNumber;
+              }
               break;
             default:
               // do nothing
